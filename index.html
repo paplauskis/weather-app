@@ -1,24 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-  <title>Weather</title>
-</head>
-<body>
-  <input type="text" id="location-input" name="location" placeholder="search location...">
-  <img src="assets/icons/search.png" alt="search icon" class="search-icon">
-  <div class="weather-info">
-    <div class="location"></div>
-    <div class="time"></div>
-    <div class="weather-description"></div>
-    <div class="temperature"></div>
-    <div class="feels-like"></div>
-    <div class="wind"></div>
-    <div class="wind-direction"></div>
-    <div class="humidity"></div>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Weather</title>
+  </head>
+  <body>
+    <div class="search-bar">
+      <input
+        type="text"
+        id="location-input"
+        name="location"
+        placeholder="search location..."
+      />
+      <img
+        src="assets/icons/search.png"
+        alt="search icon"
+        class="search-icon"
+      />
+    </div>
+    <div class="container">
+      <div class="location">
+        <div class="city"></div>
+        <div class="country"></div>
+        <div class="date"></div>
+      </div>
+      <div class="weather-info">
+        <div class="temperature info">
+          <p>Temperature</p>
+          <div class="temp-div"></div>
+          <div class="feels-like-div"></div>
+        </div>
+        <div class="weather-description info">
+          <p class="description"></p>
+          <div class="icon"></div>
+        </div>
+        <div class="wind info">
+          <p>Wind</p>
+          <div class="wind-speed"></div>
+          <div class="wind-direction"></div>
+        </div>
+        <div class="humidity info">
+          <p>Humidity</p>
+          <div class="humidity-description"></div>
+        </div>
+        <div class="precipitation info">
+          <p>Precipitation</p>
+          <div class="precitipation-mm"></div>
+        </div>
+        <div class="uv info">
+          <p>UV index</p>
+          <div class="uv-number"></div>
+          <div class="uv-descritpion"></div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
