@@ -1,14 +1,21 @@
-const locationDiv = document.querySelector('.location');
-const timeDiv = document.querySelector('.time');
-const currentDayDiv = document.querySelector('.current-day');
+const cityDiv = document.querySelector('.city');
+const countryDiv = document.querySelector('.country');
+const dateDiv = document.querySelector('.date');
+const temperatureDiv = document.querySelector('.temp-div');
 const weatherDescriptionDiv = document.querySelector('.weather-description');
-const temperatureDiv = document.querySelector('.temperature');
-const feelsLikeDiv = document.querySelector('.feels-like');
-const windDiv = document.querySelector('.wind');
+const feelsLikeDiv = document.querySelector('.feels-like-div');
+const windSpeedDiv = document.querySelector('.wind-speed');
 const windDirectionDiv = document.querySelector('.wind-direction');
-const humidityDiv = document.querySelector('.humidity');
+const visibilityDiv = document.querySelector('.visibility-number');
+const visibilityDescription = document.querySelector('.visibility-description');
+const humidityDiv = document.querySelector('.humidity-number');
+const humidityDescriptionDiv = document.querySelector('.humidity-description');
+const precipitationDiv = document.querySelector('.precipitation-mm');
+const uvNumberDiv = document.querySelector('.uv-number');
+const uvDescriptionDiv = document.querySelector('.uv-description');
 const locationInput = document.querySelector('#location-input');
 const searchLocation = document.querySelector('.search-icon');
+
 searchLocation.addEventListener('click', () =>
   getWeatherData(locationInput.value)
 );
@@ -20,6 +27,7 @@ async function getWeatherData(city) {
       { mode: 'cors' }
     );
     const weatherData = await response.json();
+    console.log(weatherData);
     displayWeatherData(weatherData);
   } catch (error) {
     console.log(error);
@@ -27,25 +35,60 @@ async function getWeatherData(city) {
 }
 
 function displayWeatherData(data) {
-  locationDiv.textContent = `${data.location.name}, ${data.location.country}`;
-  timeDiv.textContent = `${data.location.localtime.substring(11)}`;
-  currentDayDiv.textContent = checkDayOfWeek(data);
-  weatherDescriptionDiv.textContent = data.current.condition.text;
+  cityDiv.textContent = `${data.location.name}`.toUpperCase();
+  countryDiv.textContent = `${data.location.country}`;
+  dateDiv.textContent = `${checkDayOfWeek()} ${data.location.localtime.substring(11)}`;
   temperatureDiv.textContent = `${data.current.temp_c}°C`;
-  feelsLikeDiv.textContent = `${data.current.feelslike_c}°C`;
-  windDiv.textContent = `${data.current.wind_kph}kph`;
-  windDirectionDiv.textContent = data.current.wind_dir;
+  weatherDescriptionDiv.textContent = data.current.condition.text;
+  feelsLikeDiv.textContent = `Feels like ${data.current.feelslike_c}°C`;
+  windSpeedDiv.textContent = `${data.current.wind_kph} km/h`;
+  windDirectionDiv.textContent = `${getWindDirection(data)}`;
+  visibilityDiv.textContent = `${data.current.vis_km} km`;
+  visibilityDescription.textContent = `It is ${getVisibilityDescription(data)} right now`;
   humidityDiv.textContent = `${data.current.humidity}%`;
+  humidityDescriptionDiv.textContent = `${getHumidityDescription(data)}`;
+  precipitationDiv.textContent = `${data.current.precip_mm} mm`;
+  uvNumberDiv.textContent = `${data.current.uv}`;
+  uvDescriptionDiv.textContent = getUvDescription(data);
 }
 
-function checkDayOfWeek(data) {
-  if (data.current.is_day === 1) return 'Monday';
-  else if (data.current.is_day === 2) return 'Tuesday';
-  else if (data.current.is_day === 3) return 'Wednesday';
-  else if (data.current.is_day === 4) return 'Thursday';
-  else if (data.current.is_day === 5) return 'Friday';
-  else if (data.current.is_day === 6) return 'Saturday';
-  else return 'Sunday';
+function getUvDescription(data) {
+  if (data.current.uv <= 2) return 'Low';
+  else if (data.current.uv <= 5) return 'Moderate';
+  else if (data.current.uv <= 7) return 'High';
+  else if (data.current.uv <= 10) return 'Very high';
+  else return 'Extreme';
+}
+
+function getHumidityDescription(data) {
+  if (data.current.humidity < 31) return 'Relatively dry';
+  else if (data.current.humidity < 61) return 'Normal';
+  else return 'Too humid';
+}
+
+function getVisibilityDescription(data) {
+  if (data.current.vis_km < 2) return 'foggy';
+  else if (data.current.vis_km < 10) return 'nearly clear';
+  else if (data.current.vis_km < 20) return 'clear';
+  else return 'very clear';
+}
+
+function getWindDirection(data) {
+  if (25 <= data.current.wind_degree <= 65) return 'North East';
+  else if (65 < data.current.wind_degree < 115) return 'East';
+  else if (115 <= data.current.wind_degree <= 155) return 'South East';
+  else if (155 < data.current.wind_degree < 205) return 'South';
+  else if (205 <= data.current.wind_degree <= 245) return 'South West';
+  else if (245 < data.current.wind_degree < 295) return 'West';
+  else if (295 <= data.current.wind_degree <= 335) return 'North West';
+  else return 'North';
+}
+
+function checkDayOfWeek() {
+  const dayOfWeekName = new Date().toLocaleString('default', {
+    weekday: 'long',
+  });
+  return dayOfWeekName;
 }
 
 getWeatherData('london');
